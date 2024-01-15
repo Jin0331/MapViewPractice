@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Map view configurations" minToolsVersion="14.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Theater View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="TheaterViewController" customModule="MapViewPractice" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Yx-VK-uZi">
+                                <rect key="frame" x="0.0" y="95" width="393" height="723"/>
+                                <standardMapConfiguration key="preferredConfiguration"/>
+                            </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" highlighted="YES" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="9Im-Am-xt5">
+                                <rect key="frame" x="44" y="59" width="305" height="32"/>
+                                <segments>
+                                    <segment title=""/>
+                                    <segment title="" enabled="NO"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="T62-VC-Hkg"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="9Im-Am-xt5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="44" id="A6X-kv-5En"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="KCN-pf-Llp"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="top" secondItem="9Im-Am-xt5" secondAttribute="bottom" constant="5" id="QDw-X1-ntI"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9Im-Am-xt5" secondAttribute="trailing" constant="44" id="V99-uL-ORa"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="eeE-5H-c7D"/>
+                            <constraint firstItem="9Im-Am-xt5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="fQX-kC-03J"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="tJR-pi-L4c"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="mapView" destination="2Yx-VK-uZi" id="HV1-dR-XcY"/>
+                        <outlet property="segmentControl" destination="9Im-Am-xt5" id="RN5-IA-Hnz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="130.53435114503816" y="-34.507042253521128"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
