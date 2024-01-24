@@ -18,35 +18,51 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2Yx-VK-uZi">
-                                <rect key="frame" x="0.0" y="95" width="393" height="723"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <standardMapConfiguration key="preferredConfiguration"/>
                             </mapView>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" highlighted="YES" selected="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="9Im-Am-xt5">
-                                <rect key="frame" x="44" y="59" width="305" height="32"/>
-                                <segments>
-                                    <segment title=""/>
-                                    <segment title="" enabled="NO"/>
-                                </segments>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qy6-4x-dnZ">
+                                <rect key="frame" x="332" y="79" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="S6G-vq-nAu"/>
+                                    <constraint firstAttribute="height" constant="50" id="sZB-Ff-GCa"/>
+                                </constraints>
+                                <color key="tintColor" red="0.109803915" green="0.109803915" blue="0.1176470518" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="list.bullet" catalog="system" title=""/>
                                 <connections>
-                                    <action selector="segmentAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="T62-VC-Hkg"/>
+                                    <action selector="filterChange:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qli-c0-jXu"/>
                                 </connections>
-                            </segmentedControl>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifx-03-70V">
+                                <rect key="frame" x="332" y="151" width="50" height="47"/>
+                                <color key="tintColor" red="0.109803915" green="0.109803915" blue="0.1176470518" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="location.fill" catalog="system" title="Button"/>
+                                <connections>
+                                    <action selector="locationChange:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xf0-gI-l0J"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="9Im-Am-xt5" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="44" id="A6X-kv-5En"/>
-                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="KCN-pf-Llp"/>
-                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="top" secondItem="9Im-Am-xt5" secondAttribute="bottom" constant="5" id="QDw-X1-ntI"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="9Im-Am-xt5" secondAttribute="trailing" constant="44" id="V99-uL-ORa"/>
-                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="eeE-5H-c7D"/>
-                            <constraint firstItem="9Im-Am-xt5" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="fQX-kC-03J"/>
-                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="tJR-pi-L4c"/>
+                            <constraint firstItem="Qy6-4x-dnZ" firstAttribute="trailing" secondItem="2Yx-VK-uZi" secondAttribute="trailing" constant="-11" id="2eJ-JW-eqh"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Bx3-En-5yp"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="width" secondItem="Qy6-4x-dnZ" secondAttribute="width" id="Nxk-5R-QCk"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="top" secondItem="Qy6-4x-dnZ" secondAttribute="top" constant="72" id="PgW-jc-Y6B"/>
+                            <constraint firstItem="Qy6-4x-dnZ" firstAttribute="top" secondItem="2Yx-VK-uZi" secondAttribute="top" constant="20" id="TFO-MV-OLf"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Xex-pE-adh"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="c9x-SS-NX2"/>
+                            <constraint firstItem="2Yx-VK-uZi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="qdB-df-pF7"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="trailing" secondItem="2Yx-VK-uZi" secondAttribute="trailing" constant="-11" id="uFT-ch-ibV"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="height" secondItem="Qy6-4x-dnZ" secondAttribute="height" multiplier="0.7" constant="12" id="yK9-fP-Z18"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="filterButton" destination="Qy6-4x-dnZ" id="QSb-5e-0mJ"/>
+                        <outlet property="locationButton" destination="Ifx-03-70V" id="nnm-ua-awM"/>
                         <outlet property="mapView" destination="2Yx-VK-uZi" id="HV1-dR-XcY"/>
-                        <outlet property="segmentControl" destination="9Im-Am-xt5" id="RN5-IA-Hnz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -55,6 +71,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="list.bullet" catalog="system" width="128" height="87"/>
+        <image name="location.fill" catalog="system" width="128" height="119"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

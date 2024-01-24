@@ -5,46 +5,197 @@
 //  Created by JinwooLee on 1/15/24.
 //
 
+//TODO: - location 권한 - 완료
+//TODO: - 위치 버튼 누르면, 권한 없을 때 checkDeviceLocationAuthorization -> checkCurrentLocationAuthorization
+//TODO: - 맵뷰 Annotation -> 최초 뷰 접속시 전체 ---> 따라서 setAnnotation을 만들고 case별로 Annotation 값 반환하도록
+
 import UIKit
+import CoreLocation
 import MapKit
 
 class TheaterViewController: UIViewController {
     
-    @IBOutlet var segmentControl: UISegmentedControl!
     @IBOutlet var mapView: MKMapView!
+    @IBOutlet var filterButton: UIButton!
+    @IBOutlet var locationButton: UIButton!
     
-    var theaterList = TheaterList().mapAnnotations
-    var originalTheaterList = TheaterList().mapAnnotations
-    let coordinate = CLLocationCoordinate2D(latitude: SetDefaultCoordinate.latitude.rawValue, longitude: SetDefaultCoordinate.longitude.rawValue)
+    // location manager
+    let locationManager = CLLocationManager()
+    var arrTheater : [Theater] = TheaterList().mapAnnotations
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        configureSegment() // segment 초기화
-        
-        mapView.setRegion(MKCoordinateRegion(center: coordinate, latitudinalMeters: 15000, longitudinalMeters: 15000), animated: true)
-        
-        setAnnotation(arrTheater: theaterList)
-        
+        locationManager.delegate = self
     }
-    @IBAction func segmentAction(_ sender: UISegmentedControl) {
-        let allAnnotations = mapView.annotations
-        mapView.removeAnnotations(allAnnotations) //annotatation 초기화
-        
-        theaterList = selectType(arrTheater: theaterList, type: sender.titleForSegment(at: sender.selectedSegmentIndex)!)
-        
-        setAnnotation(arrTheater: theaterList)
-        theaterList = originalTheaterList
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(#function)
     }
-}
-
-extension TheaterViewController {
-    func configureSegment () {
-        segmentControl.removeAllSegments() // segment 초기화
-        for e in TheaterCase.allCases {
-            segmentControl.insertSegment(withTitle: e.index, at: e.rawValue, animated: false)
+    
+    
+    //MARK: - IBAction
+    @IBAction func filterChange(_ sender: UIButton) {
+        
+        let alert = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+        for titleName in TheaterCase.allCases {
+            alert.addAction(UIAlertAction(title: titleName.rawValue, style: .default, handler: { _ in
+                self.mapView.removeAnnotations(self.mapView.annotations) //annotatation 초기화
+                self.setAnnotation(arrTheater: self.selectType(arrTheater: self.arrTheater, type: titleName.rawValue))
+            }))
         }
         
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        present(alert, animated: true)
+
+    }
+    
+    @IBAction func locationChange(_ sender: UIButton) {
+        checkDeviceLocationAuthorization()
+    }
+    
+    
+}
+
+//MARK: - Class Function
+extension TheaterViewController {
+    func checkDeviceLocationAuthorization() {
+        DispatchQueue.global().async {
+            
+            if CLLocationManager.locationServicesEnabled() {
+                let authorization : CLAuthorizationStatus
+                
+                if #available(iOS 14.0, *) {
+                    authorization = self.locationManager.authorizationStatus
+                } else {
+                    authorization = CLLocationManager.authorizationStatus()
+                }
+                
+                DispatchQueue.main.async {
+                    self.checkCurrentLocationAuthorization(status: authorization)
+                }
+                
+            } else {
+                // 사용자가 위치 정보를 승인하지 않은 경우
+                print("위치 서비스가 꺼져있다. 권한 요청할 수 없음")
+            }
+        }
+    } // function end
+    
+    func checkCurrentLocationAuthorization(status : CLAuthorizationStatus) {
+        print(#function)
+        switch status {
+        case .notDetermined:
+            print("notDetermined")
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestWhenInUseAuthorization()
+        case .denied:
+            print("denied")
+            setDefaultAnnotation() // 거부되었을 떄의 위치
+            showLocationSettingAlert()
+        case .authorizedWhenInUse:
+            print("authorizaedWhenInUse")
+            locationManager.startUpdatingLocation()
+        default :
+            print("Error")
+        }
+    } // function end
+    
+    
+    // 사용자가 앱에 처음 접근시 나타나는 Alert임
+    func showLocationSettingAlert() {
+        let alert = UIAlertController(title: "위치 정보 이용", message: "위치 서비스를 사용할 수 없습니다. 기기의 '설정>개인정보 보호'에서 위치 서비스를 켜주세요", preferredStyle: .alert)
+        
+        let goSetting = UIAlertAction(title: "설정으로 이동", style: .default) { _ in
+            if let setting = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(setting)
+            }
+        }
+        let cancel = UIAlertAction(title: "취소", style: .cancel)
+        
+        alert.addAction(cancel)
+        alert.addAction(goSetting)
+        present(alert, animated: true)
+    } // function end
+    
+    
+    // 사용자의 위치 기반으로, MapView에 띄움
+    func setRegionAndAnnotation(center : CLLocationCoordinate2D) {
+        let region = MKCoordinateRegion(center: center, latitudinalMeters: 400, longitudinalMeters: 400)
+        mapView.setRegion(region, animated: true)
+        
+    } // function end
+}
+
+//MARK: - Location 관련
+extension TheaterViewController : CLLocationManagerDelegate {
+    
+    // 사용자의 위치를 가져오는데 성공한 경우
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        print(locations)
+        if let coordinate = locations.last?.coordinate {
+            print(coordinate)
+            // mapView의 default region 띄우는 function 호출
+            setRegionAndAnnotation(center: coordinate)
+        }
+        
+        // 사용자의 위치 업데이트 중지..
+        //TODO: - 아래의 코드 사용시 위치 업데이트는 앱 실행시 한번 또는 앱을 재시작할때마다
+        locationManager.stopUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("error - ", #function)
+    }
+    
+    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        print(#function)
+        checkDeviceLocationAuthorization() // switch 문으로 돌아감
+    }
+    
+}
+
+//MARK: - MapView 관련
+extension TheaterViewController {
+    func configureButton () {
+        
+    }
+    
+    func alertAction(title : String, completionHandler : @escaping ([Theater]) -> ()) -> UIAlertAction {
+        let ac = UIAlertAction(title: title, style: .default)
+        let theaterList = TheaterList().mapAnnotations
+        
+        completionHandler(selectType(arrTheater: theaterList, type: title))
+        
+        return ac
+    }
+    
+    func selectType(arrTheater : [Theater], type : String) -> [Theater]{
+        
+        var filteredList : [Theater] = []
+        
+        if type == TheaterCase.all.rawValue {
+            return arrTheater
+        } else {
+            for item in arrTheater {
+                if item.type == type {
+                    filteredList.append(item)
+                }
+            }
+            return filteredList
+        }
+    }
+    
+    //TODO: - 위치정보 거부시, 씨드큐브 창동 나타남 - 완료
+    func setDefaultAnnotation() {
+        let coordinate = CLLocationCoordinate2D(latitude: SetDefaultCoordinate.latitude.rawValue, longitude: SetDefaultCoordinate.longitude.rawValue)
+        
+        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 6000, longitudinalMeters: 6000)
+        mapView.setRegion(region, animated: true)
+        
+        //  전체
+        setAnnotation(arrTheater: TheaterList().mapAnnotations)
     }
     
     func setAnnotation(arrTheater : [Theater]) {
@@ -56,20 +207,5 @@ extension TheaterViewController {
         }
     }
     
-    func selectType(arrTheater : [Theater], type : String) -> [Theater]{
-        
-        var filteredList : [Theater] = []
-        
-        if type == TheaterCase.all.index {
-            return arrTheater
-        } else {
-            for item in arrTheater {
-                if item.type == type {
-                    filteredList.append(item)
-                }
-            }
-            return filteredList
-        }
-    }
 }
 
