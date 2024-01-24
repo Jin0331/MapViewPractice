@@ -5,6 +5,17 @@
 //  Created by JinwooLee on 1/15/24.
 //
 
+//TODO: - location 권한 - 완료
+//TODO: - 위치 버튼 누르면, 권한 없을 때 checkDeviceLocationAuthorization -> checkCurrentLocationAuthorization
+/*
+씨드큐브 위도 경도 -> 37.65455, 127.0502
+ 
+ */
+
+
+
+//TODO: - 맵뷰 Annotation -> 최초 뷰 접속시 전체 ---> 따라서 setAnnotation을 만들고 case별로 Annotation 값 반환하도록
+
 import UIKit
 import CoreLocation
 import MapKit
@@ -13,6 +24,7 @@ class TheaterViewController: UIViewController {
     
     @IBOutlet var mapView: MKMapView!
     @IBOutlet var filterButton: UIButton!
+    @IBOutlet var locationButton: UIButton!
     
     // location manager
     let locationManager = CLLocationManager()
@@ -26,11 +38,16 @@ class TheaterViewController: UIViewController {
         super.viewDidLoad()
         
         locationManager.delegate = self
-        checkDeviceLocationAuthorization()
-        
 //        setAnnotation(arrTheater: theaterList)
         
     }
+    
+    //MARK: - IBAction
+    @IBAction func locationChange(_ sender: UIButton) {
+        checkDeviceLocationAuthorization()
+    }
+    
+    
 }
 
 //MARK: - Class Function
@@ -62,11 +79,15 @@ extension TheaterViewController {
         print(#function)
         switch status {
         case .notDetermined:
+            print("notDetermined")
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.requestWhenInUseAuthorization()
         case .denied:
+            print("denied")
+            setDefaultAnnotation() // 거부되었을 떄의 위치
             showLocationSettingAlert()
         case .authorizedWhenInUse:
+            print("authorizaedWhenInUse")
             locationManager.startUpdatingLocation()
         default :
             print("Error")
@@ -127,47 +148,47 @@ extension TheaterViewController : CLLocationManagerDelegate {
     
 }
 
+//MARK: - MapView 관련
+extension TheaterViewController {
+    func configureButton () {
+        
+    }
+    
+    func setAnnotation(arrTheater : [Theater]) {
+        for item in arrTheater {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude)
+            annotation.title = item.location
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
+    //TODO: - 위치정보 거부시, 씨드큐브 창동 나타남 - 완료
+    func setDefaultAnnotation() {
+        let coordinate = CLLocationCoordinate2D(latitude: SetDefaultCoordinate.latitude.rawValue, longitude: SetDefaultCoordinate.longitude.rawValue)
+        
+        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 400, longitudinalMeters: 400)
+        
+        mapView.setRegion(region, animated: true)
+    }
+    
+    
+    
+    
+    func selectType(arrTheater : [Theater], type : String) -> [Theater]{
+        
+        var filteredList : [Theater] = []
+        
+        if type == TheaterCase.all.index {
+            return arrTheater
+        } else {
+            for item in arrTheater {
+                if item.type == type {
+                    filteredList.append(item)
+                }
+            }
+            return filteredList
+        }
+    }
+}
 
-
-
-
-
-
-
-
-//
-//
-//
-//
-////MARK: - MapView 관련
-//extension TheaterViewController {
-//    func configureButton () {
-//        
-//    }
-//    
-//    func setAnnotation(arrTheater : [Theater]) {
-//        for item in arrTheater {
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude)
-//            annotation.title = item.location
-//            mapView.addAnnotation(annotation)
-//        }
-//    }
-//    
-//    func selectType(arrTheater : [Theater], type : String) -> [Theater]{
-//        
-//        var filteredList : [Theater] = []
-//        
-//        if type == TheaterCase.all.index {
-//            return arrTheater
-//        } else {
-//            for item in arrTheater {
-//                if item.type == type {
-//                    filteredList.append(item)
-//                }
-//            }
-//            return filteredList
-//        }
-//    }
-//}
-//

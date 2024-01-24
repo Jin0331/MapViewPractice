@@ -30,20 +30,33 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifx-03-70V">
+                                <rect key="frame" x="332" y="151" width="50" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="locationChange:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xf0-gI-l0J"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Qy6-4x-dnZ" firstAttribute="trailing" secondItem="2Yx-VK-uZi" secondAttribute="trailing" constant="-11" id="2eJ-JW-eqh"/>
                             <constraint firstItem="2Yx-VK-uZi" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="Bx3-En-5yp"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="width" secondItem="Qy6-4x-dnZ" secondAttribute="width" id="Nxk-5R-QCk"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="top" secondItem="Qy6-4x-dnZ" secondAttribute="top" constant="72" id="PgW-jc-Y6B"/>
                             <constraint firstItem="Qy6-4x-dnZ" firstAttribute="top" secondItem="2Yx-VK-uZi" secondAttribute="top" constant="20" id="TFO-MV-OLf"/>
                             <constraint firstItem="2Yx-VK-uZi" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Xex-pE-adh"/>
                             <constraint firstItem="2Yx-VK-uZi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="c9x-SS-NX2"/>
                             <constraint firstItem="2Yx-VK-uZi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="qdB-df-pF7"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="trailing" secondItem="2Yx-VK-uZi" secondAttribute="trailing" constant="-11" id="uFT-ch-ibV"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="height" secondItem="Qy6-4x-dnZ" secondAttribute="height" multiplier="0.7" id="yK9-fP-Z18"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="filterButton" destination="Qy6-4x-dnZ" id="QSb-5e-0mJ"/>
+                        <outlet property="locationButton" destination="Ifx-03-70V" id="nnm-ua-awM"/>
                         <outlet property="mapView" destination="2Yx-VK-uZi" id="HV1-dR-XcY"/>
                     </connections>
                 </viewController>
