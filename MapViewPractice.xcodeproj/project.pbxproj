@@ -58,7 +58,6 @@
 		DB42E2712B5553C9006988F8 /* MapViewPractice */ = {
 			isa = PBXGroup;
 			children = (
-				DB42E28C2B55573F006988F8 /* Protocol */,
 				DB42E28B2B55545D006988F8 /* Theater */,
 				DB42E2722B5553C9006988F8 /* AppDelegate.swift */,
 				DB42E2742B5553C9006988F8 /* SceneDelegate.swift */,
@@ -101,13 +100,6 @@
 				DB42E2862B555432006988F8 /* View */,
 			);
 			path = Theater;
-			sourceTree = "<group>";
-		};
-		DB42E28C2B55573F006988F8 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocol;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

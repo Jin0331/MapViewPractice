@@ -7,13 +7,6 @@
 
 //TODO: - location 권한 - 완료
 //TODO: - 위치 버튼 누르면, 권한 없을 때 checkDeviceLocationAuthorization -> checkCurrentLocationAuthorization
-/*
-씨드큐브 위도 경도 -> 37.65455, 127.0502
- 
- */
-
-
-
 //TODO: - 맵뷰 Annotation -> 최초 뷰 접속시 전체 ---> 따라서 setAnnotation을 만들고 case별로 Annotation 값 반환하도록
 
 import UIKit
@@ -28,21 +21,35 @@ class TheaterViewController: UIViewController {
     
     // location manager
     let locationManager = CLLocationManager()
-    
-    var theaterList = TheaterList().mapAnnotations
-    var originalTheaterList = TheaterList().mapAnnotations
-    
-//    let coordinate = CLLocationCoordinate2D(latitude: SetDefaultCoordinate.latitude.rawValue, longitude: SetDefaultCoordinate.longitude.rawValue)
+    var arrTheater : [Theater] = TheaterList().mapAnnotations
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         locationManager.delegate = self
-//        setAnnotation(arrTheater: theaterList)
-        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        print(#function)
+    }
+    
+    
     //MARK: - IBAction
+    @IBAction func filterChange(_ sender: UIButton) {
+        
+        let alert = UIAlertController(title: "", message: "", preferredStyle: .actionSheet)
+        for titleName in TheaterCase.allCases {
+            alert.addAction(UIAlertAction(title: titleName.rawValue, style: .default, handler: { _ in
+                self.mapView.removeAnnotations(self.mapView.annotations) //annotatation 초기화
+                self.setAnnotation(arrTheater: self.selectType(arrTheater: self.arrTheater, type: titleName.rawValue))
+            }))
+        }
+        
+        alert.addAction(UIAlertAction(title: "취소", style: .cancel))
+        present(alert, animated: true)
+
+    }
+    
     @IBAction func locationChange(_ sender: UIButton) {
         checkDeviceLocationAuthorization()
     }
@@ -116,6 +123,7 @@ extension TheaterViewController {
     func setRegionAndAnnotation(center : CLLocationCoordinate2D) {
         let region = MKCoordinateRegion(center: center, latitudinalMeters: 400, longitudinalMeters: 400)
         mapView.setRegion(region, animated: true)
+        
     } // function end
 }
 
@@ -154,32 +162,20 @@ extension TheaterViewController {
         
     }
     
-    func setAnnotation(arrTheater : [Theater]) {
-        for item in arrTheater {
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude)
-            annotation.title = item.location
-            mapView.addAnnotation(annotation)
-        }
-    }
-    
-    //TODO: - 위치정보 거부시, 씨드큐브 창동 나타남 - 완료
-    func setDefaultAnnotation() {
-        let coordinate = CLLocationCoordinate2D(latitude: SetDefaultCoordinate.latitude.rawValue, longitude: SetDefaultCoordinate.longitude.rawValue)
+    func alertAction(title : String, completionHandler : @escaping ([Theater]) -> ()) -> UIAlertAction {
+        let ac = UIAlertAction(title: title, style: .default)
+        let theaterList = TheaterList().mapAnnotations
         
-        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 400, longitudinalMeters: 400)
+        completionHandler(selectType(arrTheater: theaterList, type: title))
         
-        mapView.setRegion(region, animated: true)
+        return ac
     }
-    
-    
-    
     
     func selectType(arrTheater : [Theater], type : String) -> [Theater]{
         
         var filteredList : [Theater] = []
         
-        if type == TheaterCase.all.index {
+        if type == TheaterCase.all.rawValue {
             return arrTheater
         } else {
             for item in arrTheater {
@@ -190,5 +186,26 @@ extension TheaterViewController {
             return filteredList
         }
     }
+    
+    //TODO: - 위치정보 거부시, 씨드큐브 창동 나타남 - 완료
+    func setDefaultAnnotation() {
+        let coordinate = CLLocationCoordinate2D(latitude: SetDefaultCoordinate.latitude.rawValue, longitude: SetDefaultCoordinate.longitude.rawValue)
+        
+        let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 6000, longitudinalMeters: 6000)
+        mapView.setRegion(region, animated: true)
+        
+        //  전체
+        setAnnotation(arrTheater: TheaterList().mapAnnotations)
+    }
+    
+    func setAnnotation(arrTheater : [Theater]) {
+        for item in arrTheater {
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: item.latitude, longitude: item.longitude)
+            annotation.title = item.location
+            mapView.addAnnotation(annotation)
+        }
+    }
+    
 }
 

@@ -27,13 +27,18 @@
                                     <constraint firstAttribute="width" constant="50" id="S6G-vq-nAu"/>
                                     <constraint firstAttribute="height" constant="50" id="sZB-Ff-GCa"/>
                                 </constraints>
+                                <color key="tintColor" red="0.109803915" green="0.109803915" blue="0.1176470518" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="list.bullet" catalog="system" title=""/>
+                                <connections>
+                                    <action selector="filterChange:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qli-c0-jXu"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ifx-03-70V">
-                                <rect key="frame" x="332" y="151" width="50" height="35"/>
+                                <rect key="frame" x="332" y="151" width="50" height="47"/>
+                                <color key="tintColor" red="0.109803915" green="0.109803915" blue="0.1176470518" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="location.fill" catalog="system" title="Button"/>
                                 <connections>
                                     <action selector="locationChange:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xf0-gI-l0J"/>
                                 </connections>
@@ -51,7 +56,7 @@
                             <constraint firstItem="2Yx-VK-uZi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="c9x-SS-NX2"/>
                             <constraint firstItem="2Yx-VK-uZi" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="qdB-df-pF7"/>
                             <constraint firstItem="Ifx-03-70V" firstAttribute="trailing" secondItem="2Yx-VK-uZi" secondAttribute="trailing" constant="-11" id="uFT-ch-ibV"/>
-                            <constraint firstItem="Ifx-03-70V" firstAttribute="height" secondItem="Qy6-4x-dnZ" secondAttribute="height" multiplier="0.7" id="yK9-fP-Z18"/>
+                            <constraint firstItem="Ifx-03-70V" firstAttribute="height" secondItem="Qy6-4x-dnZ" secondAttribute="height" multiplier="0.7" constant="12" id="yK9-fP-Z18"/>
                         </constraints>
                     </view>
                     <connections>
@@ -66,6 +71,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="list.bullet" catalog="system" width="128" height="87"/>
+        <image name="location.fill" catalog="system" width="128" height="119"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
